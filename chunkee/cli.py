@@ -1,59 +1,47 @@
-# chunkee/cli.py
-import argparse
-import time
-import os
-import json
-from chunkee.engine import run_chunking_pipeline
-from chunkee.export import generate_empathy_map_chunk_cypher
+Chunkee CLI — Entry point for structure-aware chunking and modeling tools.
 
-def truffle_shuffle_animation():
-    frames = [
-        "(>'-')>   ",
-        "(>'-')> <('-'<)",
-        "^('-')^  <('-'<)  ^('-')^",
-        "<('-'<)   (>'-')>   ^('-')^",
-        "CHUNK IT.  SHAKE IT.  STRUCTURE IT."
-    ]
-    print("\n🥾 Performing the Truffle Shuffle...\n")
-    for frame in frames:
-        print(frame)
-        time.sleep(0.6)
-    print("\n✨ Let's make these transcripts dance. ✨\n")
+This script sets up the main CLI interface for Chunkee, supporting subcommands like
+`truffle-shuffle` to run the chunking pipeline on qualitative data.
+
+Core Features:
+- Modular command system via argparse subparsers
+- Configurable chunking modes (semantic, structural, composite)
+- Output to JSON and Neo4j-compatible Cypher
+- Truffle Shuffle animation for user delight
+
+Future commands (e.g., validate, export, merge) can be added as separate modules
+under chunkee.commands for clean extension and separation of concerns.
+"""
+
+import argparse
+import sys
+from chunkee.commands import truffle_shuffle
 
 def main():
     parser = argparse.ArgumentParser(
-        prog='truffle-shuffle',
+        prog='chunkee',
         description='Chunkee CLI — Structure-aware chunking of qualitative data.'
     )
-    parser.add_argument('--input', '-i', required=True, help='Path to transcript or PDF file')
-    parser.add_argument('--mode', '-m', default='composite', choices=['semantic', 'structural', 'composite'], help='Chunking mode')
-    parser.add_argument('--out', '-o', default='chunkee_chunks.json', help='Output path for chunked JSON')
-    parser.add_argument('--profile', '-p', help='Optional chunking config profile')
-    parser.add_argument('--neo4j', action='store_true', help='Also export output to Neo4j-compatible .cypher')
+
+    subparsers = parser.add_subparsers(dest='command', help='Available commands')
+
+    # Truffle Shuffle command
+    shuffle_parser = subparsers.add_parser(
+        'truffle-shuffle',
+        help='Run the Truffle Shuffle structural chunking pipeline'
+    )
+    shuffle_parser.add_argument('--input', '-i', required=True, help='Path to transcript or PDF file')
+    shuffle_parser.add_argument('--mode', '-m', default='composite', choices=['semantic', 'structural', 'composite'], help='Chunking mode')
+    shuffle_parser.add_argument('--out', '-o', default='chunkee_chunks.json', help='Output path for chunked JSON')
+    shuffle_parser.add_argument('--profile', '-p', help='Optional chunking config profile')
+    shuffle_parser.add_argument('--neo4j', action='store_true', help='Also export output to Neo4j-compatible .cypher')
 
     args = parser.parse_args()
-    truffle_shuffle_animation()
 
-    run_chunking_pipeline(
-        input_path=args.input,
-        output_path=args.out,
-        mode=args.mode,
-        profile=args.profile
-    )
-
-    print(f"\n✅ Chunked output written to {args.out}")
-
-    if args.neo4j:
-        try:
-            with open(args.out, 'r') as f:
-                chunks = json.load(f)
-            cypher = generate_empathy_map_chunk_cypher(chunks)
-            cypher_path = args.out.replace('.json', '.cypher')
-            with open(cypher_path, 'w') as out:
-                out.write(cypher)
-            print(f"✅ Neo4j Cypher file exported: {cypher_path}")
-        except Exception as e:
-            print(f"⚠️ Failed to export Cypher: {e}")
+    if args.command == 'truffle-shuffle':
+        truffle_shuffle.run(args)
+    else:
+        parser.print_help()
 
 if __name__ == '__main__':
     main()
