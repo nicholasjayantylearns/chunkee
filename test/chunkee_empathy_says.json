@@ -1,0 +1,12 @@
+[
+  {
+    "chunk_id": "chunk_0001",
+    "structure": "empathy_map",
+    "attribute": "says",
+    "theme": "Uncertainty",
+    "text": "I don't know what happens after I lose coverage.",
+    "speaker": "Marisol",
+    "speaker_type": "Persona",
+    "source_doc": "MarisolSays.pdf"
+  }
+]
