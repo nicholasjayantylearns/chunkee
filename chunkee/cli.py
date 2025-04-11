@@ -1,5 +1,6 @@
 Chunkee CLI — Entry point for structure-aware chunking and modeling tools.
 
+"""
 This script sets up the main CLI interface for Chunkee, supporting subcommands like
 `truffle-shuffle` to run the chunking pipeline on qualitative data.
 
