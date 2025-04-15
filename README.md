@@ -49,7 +49,6 @@ RETURN p.name AS speaker, c.text AS statement
 ## 🧠 Built For
 
 - UX researchers
-- DEI strategists
 - AI ethics teams
 - Product ops & strategy
 - Customer support insights
