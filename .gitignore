@@ -16,5 +16,5 @@ __pycache__/
 *.log
 
 # Ignore test assets
-tests/assets/
+test/assets/
 
