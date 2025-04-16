@@ -1,5 +1,6 @@
 # Ignore Python virtual environment
 venv/
+chunkee-venv/
 
 # Byte-compiled files
 __pycache__/
@@ -13,3 +14,7 @@ __pycache__/
 
 # Logs
 *.log
+
+# Ignore test assets
+test/assets/
+
